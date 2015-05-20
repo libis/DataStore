@@ -1,3 +1,7 @@
+Gemfile.lock
+.idea
+data/metadata/*
+data/objects/*
 *.gem
 *.rbc
 /.config

@@ -1,0 +1,164 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.0.2",
+        "title": "DataStore API",
+        "description": "This is the DataStore API"
+    },
+    "schemes": [
+        "http"
+    ],
+    "host": "services.libis.be",
+    "basePath": "/store",
+    "paths": {
+        "/": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "System status",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/DataStore"
+                        }
+                    }
+                }
+            }
+        },
+        "/{folder_id}/data": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List all objects for a folder_id",
+                "responses": {
+                    "200": {
+                        "description": "returns a list of objects for a folder_id"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "folder_id",
+                        "description": "ID of the folder",
+                        "type": "string"
+                    }
+                ]
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "description": "Save an object to a folder. Objects can be saved using a ContentType=multipart/form-data post(File upload) or by sending a JSON object and a ContentType=application/json. <br>Save an object using multipartform-data. <br>&nbsp; ```curl -v -F 'data=@./myfile' http://datastore/[TOKEN]/data ```<br><br>Save an object using application/json.<br>&nbsp;```curl -H 'Content-Type application/json' -X POST -d '{\"data\":{\"object_name\":\"test.txt\", \"type\":\"text/plain\", \"content\":\"Hello World\"}}' http://datastore/[folder_id]/data    ```",
+                "responses": {
+                    "200": {
+                        "description": "returns datastore_id"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "folder_id",
+                        "in": "path",
+                        "description": "A folder_id where the object should be stored",
+                        "type": "string"
+                    },
+                    {
+                        "name": "data",
+                        "in": "formData",
+                        "description": "the serialized data",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/{folder_id}/data/{uuid}": {
+            "get": {
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns an object"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "folder_id",
+                        "description": "folder_id",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "uuid",
+                        "description": "object UUID",
+                        "type": "string",
+                        "required": true
+                    }
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "delete a stored object"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "folder_id",
+                        "in": "path",
+                        "description": "folder_id",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "object UUID",
+                        "type": "string",
+                        "required": true
+                    }
+                ]
+            },
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "description": "update an object using application/json. <br/> ```curl -H 'Content-Type: application/json' -X PUT -d '{\"data\":{\"object_name\":\"test.txt\", \"type\":\"text/plain\", \"content\":\"1234\"}}' http://datastore/[folder_id]/data```",
+                "responses": {
+                    "200": {
+                        "description": "returns uuid"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "folder_id",
+                        "in": "path",
+                        "description": "A folder_id you define",
+                        "type": "string"
+                    },
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "object UUID",
+                        "type": "string",
+                        "required": true
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "DataStore": {
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        }
+    }
+}
