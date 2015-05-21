@@ -2,6 +2,7 @@ Gemfile.lock
 .idea
 data/metadata/*
 data/objects/*
+.DS_Store
 *.gem
 *.rbc
 /.config

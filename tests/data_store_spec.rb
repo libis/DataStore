@@ -5,7 +5,7 @@ require 'rspec'
 require 'rack/test'
 
 ### SETUP
-$http_headers =  {'HTTP_ACCEPT' => 'application/json', 'HTTP_AUTHORIZATION' => '123'}
+$http_headers =  {'HTTP_ACCEPT' => 'application/json', 'HTTP_AUTHORIZATION' => 'DataStore ab00238646a461ade52f4f14c17441b2'}
 
 def make_multipart(key, objekt)
   boundary = (Time.now.utc.to_f * 1000).to_i
@@ -67,13 +67,13 @@ describe 'Testing DataStore API' do
   end
 
   it 'should stream the file' do
-    get "/123/#{$file_uuid}",nil ,$http_headers
+    get "/123/#{$file_uuid}", nil,$http_headers
     expect(last_response).to be_ok
     expect(last_response.body).to eq('Hello world')
   end
 
   it 'should delete a file' do
-    delete "/123/#{$file_uuid}",nil ,$http_headers
+    delete "/123/#{$file_uuid}", nil, $http_headers
     expect(last_response).to be_ok
     expect(MultiJson.load(last_response.body)).to eq($file_uuid)
   end
